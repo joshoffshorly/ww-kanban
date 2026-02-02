@@ -15,20 +15,22 @@
                         :data-stack-key="getStackKey(null)"
                         :states="computedIsDragging ? ['dragging'] : []"
                     ></wwElement>
-                    <button
-                        v-if="hasMoreItems(getStackKey(null))"
-                        class="ww-kanban-load-more ww-kanban-load-more-link"
-                        @click="loadMore(getStackKey(null))"
-                        :style="loadMoreButtonStyle"
-                    >
-                        {{ content.loadMoreText || 'Load more' }}
-                    </button>
-                    <div
-                        v-else-if="isInfiniteScrollEnabled && getTotalItemsForKey(getStackKey(null)) > 0"
-                        class="ww-kanban-end-indicator"
-                        :style="endIndicatorStyle"
-                    >
-                        {{ content.endIndicatorText || 'All items loaded' }}
+                    <div class="ww-kanban-footer">
+                        <button
+                            v-if="hasMoreItems(getStackKey(null))"
+                            class="ww-kanban-load-more ww-kanban-load-more-link"
+                            @click="loadMore(getStackKey(null))"
+                            :style="loadMoreButtonStyle"
+                        >
+                            {{ content.loadMoreText || 'Load more' }}
+                        </button>
+                        <div
+                            v-else-if="isInfiniteScrollEnabled && getTotalItemsForKey(getStackKey(null)) > 0"
+                            class="ww-kanban-end-indicator"
+                            :style="endIndicatorStyle"
+                        >
+                            {{ content.endIndicatorText || 'All items loaded' }}
+                        </div>
                     </div>
                 </div>
             </wwLayoutItemContext>
@@ -45,20 +47,22 @@
                         :data-stack-key="getStackKey(stack.value)"
                         :states="computedIsDragging ? ['dragging'] : []"
                     ></wwElement>
-                    <button
-                        v-if="hasMoreItems(getStackKey(stack.value))"
-                        class="ww-kanban-load-more ww-kanban-load-more-link"
-                        @click="loadMore(getStackKey(stack.value))"
-                        :style="loadMoreButtonStyle"
-                    >
-                        {{ content.loadMoreText || 'Load more' }}
-                    </button>
-                    <div
-                        v-else-if="isInfiniteScrollEnabled && getTotalItemsForKey(getStackKey(stack.value)) > 0"
-                        class="ww-kanban-end-indicator"
-                        :style="endIndicatorStyle"
-                    >
-                        {{ content.endIndicatorText || 'All items loaded' }}
+                    <div class="ww-kanban-footer">
+                        <button
+                            v-if="hasMoreItems(getStackKey(stack.value))"
+                            class="ww-kanban-load-more ww-kanban-load-more-link"
+                            @click="loadMore(getStackKey(stack.value))"
+                            :style="loadMoreButtonStyle"
+                        >
+                            {{ content.loadMoreText || 'Load more' }}
+                        </button>
+                        <div
+                            v-else-if="isInfiniteScrollEnabled && getTotalItemsForKey(getStackKey(stack.value)) > 0"
+                            class="ww-kanban-end-indicator"
+                            :style="endIndicatorStyle"
+                        >
+                            {{ content.endIndicatorText || 'All items loaded' }}
+                        </div>
                     </div>
                 </div>
             </wwLayoutItemContext>
@@ -395,14 +399,26 @@ export default {
 
 <style lang="scss" scoped>
 .ww-kanban {
+    display: flex;
     flex-direction: row;
     flex-wrap: var(--wrap-stacks);
+    align-items: stretch;
 }
 
 .ww-kanban-stack-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+.ww-kanban-stack {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.ww-kanban-footer {
+    flex-shrink: 0;
 }
 
 .ww-kanban-load-more-link {
