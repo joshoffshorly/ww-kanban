@@ -26,6 +26,10 @@ export default {
         customSettingsPropertiesOrder: [
             "items",
             ["itemKey", "stackedBy", "sortedBy", "sortOrder"],
+            "enableInfiniteScroll",
+            ["pageSize"],
+            ["loadMoreText", "loadMoreTextColor"],
+            ["endIndicatorText", "endIndicatorColor"],
             "readonly",
             "draggingCursor",
             "customDragHandle",
@@ -50,6 +54,16 @@ export default {
             },
             getTestEvent: "getTestEvent",
             default: true,
+        },
+        {
+            name: "load:more",
+            label: { en: "On load more" },
+            event: {
+                stackKey: "",
+                currentCount: 0,
+                newCount: 0,
+                totalItems: 0,
+            },
         },
     ],
     properties: {
@@ -138,6 +152,83 @@ export default {
                 ],
             },
             defaultValue: "asc",
+            bindable: true,
+            section: "settings",
+        },
+        enableInfiniteScroll: {
+            label: {
+                en: "Load more button",
+            },
+            type: "OnOff",
+            defaultValue: false,
+            section: "settings",
+        },
+        pageSize: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "Items per load",
+            },
+            type: "Number",
+            defaultValue: 20,
+            section: "settings",
+        },
+        loadMoreText: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "Load more text",
+            },
+            type: "Text",
+            defaultValue: "Load more",
+            bindable: true,
+            section: "settings",
+        },
+        loadMoreTextColor: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "Load more color",
+            },
+            type: "Color",
+            defaultValue: "#007bff",
+            bindable: true,
+            section: "settings",
+        },
+        loadMoreMarginTop: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "Load more spacing",
+            },
+            type: "Length",
+            defaultValue: "8px",
+            bindable: true,
+            section: "settings",
+        },
+        endIndicatorText: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "End indicator text",
+            },
+            type: "Text",
+            defaultValue: "All items loaded",
+            bindable: true,
+            section: "settings",
+        },
+        endIndicatorColor: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "End indicator color",
+            },
+            type: "Color",
+            defaultValue: "#6c757d",
+            bindable: true,
+            section: "settings",
+        },
+        endIndicatorMarginTop: {
+            hidden: (content) => !content.enableInfiniteScroll,
+            label: {
+                en: "End indicator spacing",
+            },
+            type: "Length",
+            defaultValue: "8px",
             bindable: true,
             section: "settings",
         },
@@ -291,7 +382,7 @@ export default {
             propertyHelp: {
                 tooltip: `By default, dragging is triggered when a user clicks anywhere on a Kanban item. To trigger the dragging behavior on click of a specific element inside the item:
 * Enable this option
-* Go to that element’s Settings > HTML attributes
+* Go to that element's Settings > HTML attributes
 * Add the class you choose to its Class attribute (default: 'draggable'))`,
             },
             hidden: (content, sidePanelContent, boundProps, wwProps) => wwProps?.handle?.length,
